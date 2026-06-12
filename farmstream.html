@@ -1,0 +1,942 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Farmstream — Explore the Salinas Valley</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;0,900;1,400;1,700&family=Lora:ital,wght@0,400;0,500;0,600;1,400&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --forest: #2C4A1E;
+    --moss: #4A7232;
+    --sage: #7A9E6E;
+    --sage-light: #B8CFAD;
+    --bark: #6B4226;
+    --walnut: #8C5E3C;
+    --caramel: #C4895A;
+    --wheat: #E8D5B0;
+    --parchment: #F5EDD8;
+    --cream: #FBF6EC;
+    --soil: #3E2B1A;
+    --text: #2A1F0F;
+    --text-muted: #6B5340;
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    background: var(--cream);
+    color: var(--text);
+    font-family: 'Lora', serif;
+    overflow-x: hidden;
+  }
+
+  /* NAV */
+  nav {
+    position: fixed; top: 0; left: 0; right: 0; z-index: 100;
+    display: flex; align-items: center; justify-content: space-between;
+    padding: 1.2rem 3rem;
+    background: rgba(44, 74, 30, 0.95);
+    backdrop-filter: blur(8px);
+  }
+  .nav-logo {
+    font-family: 'Playfair Display', serif;
+    font-size: 1.6rem; font-weight: 900; font-style: italic;
+    color: var(--wheat);
+    letter-spacing: -0.02em;
+    cursor: pointer;
+  }
+  .nav-logo span { color: var(--caramel); }
+  .nav-links { display: flex; gap: 2rem; align-items: center; }
+  .nav-links a {
+    color: var(--sage-light); text-decoration: none;
+    font-family: 'DM Sans', sans-serif; font-size: 0.85rem;
+    font-weight: 500; letter-spacing: 0.08em; text-transform: uppercase;
+    transition: color 0.2s;
+  }
+  .nav-links a:hover { color: var(--wheat); }
+  .nav-btn {
+    background: var(--caramel); color: white; border: none;
+    padding: 0.55rem 1.4rem; border-radius: 2rem;
+    font-family: 'DM Sans', sans-serif; font-size: 0.85rem;
+    font-weight: 500; cursor: pointer; transition: background 0.2s;
+    letter-spacing: 0.04em;
+  }
+  .nav-btn:hover { background: var(--walnut); }
+
+  /* ===== LANDING PAGE ===== */
+  #page-landing { display: block; }
+  #page-farm { display: none; }
+
+  /* HERO */
+  .hero {
+    height: 100vh; position: relative;
+    display: flex; align-items: center;
+    overflow: hidden;
+  }
+  .hero-bg {
+    position: absolute; inset: 0;
+    background-image: url('https://images.unsplash.com/photo-1500382017468-9049fed747ef?w=1600&q=80');
+    background-size: cover; background-position: center;
+    filter: brightness(0.55) saturate(0.8);
+    transform: scale(1.05);
+    animation: heroZoom 18s ease-in-out infinite alternate;
+  }
+  @keyframes heroZoom {
+    from { transform: scale(1.05); }
+    to   { transform: scale(1.12); }
+  }
+  .hero-overlay {
+    position: absolute; inset: 0;
+    background: linear-gradient(135deg, rgba(44,74,30,0.65) 0%, rgba(62,43,26,0.4) 60%, transparent 100%);
+  }
+  .hero-content {
+    position: relative; z-index: 1;
+    padding: 0 3rem; max-width: 760px;
+    animation: heroFade 1.2s ease both;
+  }
+  @keyframes heroFade {
+    from { opacity: 0; transform: translateY(30px); }
+    to   { opacity: 1; transform: translateY(0); }
+  }
+  .hero-eyebrow {
+    font-family: 'DM Sans', sans-serif; font-size: 0.8rem;
+    font-weight: 500; letter-spacing: 0.2em; text-transform: uppercase;
+    color: var(--caramel); margin-bottom: 1.2rem;
+    display: flex; align-items: center; gap: 0.7rem;
+  }
+  .hero-eyebrow::before {
+    content: ''; display: block; width: 30px; height: 1px;
+    background: var(--caramel);
+  }
+  .hero h1 {
+    font-family: 'Playfair Display', serif;
+    font-size: clamp(3rem, 6vw, 5.5rem);
+    font-weight: 900; line-height: 1.05;
+    color: var(--parchment); margin-bottom: 1.5rem;
+  }
+  .hero h1 em { font-style: italic; color: var(--caramel); }
+  .hero p {
+    font-size: 1.15rem; color: rgba(245,237,216,0.85);
+    line-height: 1.75; max-width: 520px; margin-bottom: 2.5rem;
+  }
+  .hero-btns { display: flex; gap: 1rem; flex-wrap: wrap; }
+  .btn-primary {
+    background: var(--caramel); color: white; border: none;
+    padding: 0.9rem 2.2rem; border-radius: 3rem;
+    font-family: 'DM Sans', sans-serif; font-size: 0.95rem;
+    font-weight: 500; cursor: pointer;
+    transition: all 0.25s; letter-spacing: 0.02em;
+    box-shadow: 0 4px 20px rgba(196,137,90,0.4);
+  }
+  .btn-primary:hover { background: var(--bark); transform: translateY(-2px); box-shadow: 0 6px 28px rgba(196,137,90,0.5); }
+  .btn-outline {
+    background: transparent; color: var(--wheat);
+    border: 1.5px solid rgba(245,237,216,0.5);
+    padding: 0.9rem 2.2rem; border-radius: 3rem;
+    font-family: 'DM Sans', sans-serif; font-size: 0.95rem;
+    font-weight: 500; cursor: pointer; transition: all 0.25s;
+  }
+  .btn-outline:hover { border-color: var(--wheat); background: rgba(245,237,216,0.1); }
+  .hero-scroll {
+    position: absolute; bottom: 2.5rem; left: 50%;
+    transform: translateX(-50%);
+    display: flex; flex-direction: column; align-items: center;
+    gap: 0.4rem; color: rgba(245,237,216,0.6);
+    font-family: 'DM Sans', sans-serif; font-size: 0.72rem;
+    letter-spacing: 0.14em; text-transform: uppercase;
+    animation: bounce 2s ease infinite;
+  }
+  @keyframes bounce {
+    0%,100% { transform: translateX(-50%) translateY(0); }
+    50%      { transform: translateX(-50%) translateY(8px); }
+  }
+  .hero-scroll svg { opacity: 0.6; }
+
+  /* TRUST BAR */
+  .trust-bar {
+    background: var(--forest);
+    padding: 1.1rem 3rem;
+    display: flex; align-items: center; justify-content: center; gap: 3rem;
+    flex-wrap: wrap;
+  }
+  .trust-item {
+    display: flex; align-items: center; gap: 0.6rem;
+    font-family: 'DM Sans', sans-serif; font-size: 0.82rem;
+    color: var(--sage-light); font-weight: 400; letter-spacing: 0.04em;
+  }
+  .trust-item svg { color: var(--caramel); flex-shrink: 0; }
+
+  /* SECTION HEADERS */
+  .section-header {
+    text-align: center; margin-bottom: 3.5rem;
+  }
+  .section-eyebrow {
+    font-family: 'DM Sans', sans-serif; font-size: 0.75rem;
+    font-weight: 500; letter-spacing: 0.22em; text-transform: uppercase;
+    color: var(--caramel); margin-bottom: 0.8rem;
+  }
+  .section-header h2 {
+    font-family: 'Playfair Display', serif;
+    font-size: clamp(2rem, 3.5vw, 3rem);
+    font-weight: 700; color: var(--forest);
+    line-height: 1.15;
+  }
+  .section-header p {
+    margin-top: 1rem; color: var(--text-muted);
+    font-size: 1rem; line-height: 1.8; max-width: 560px; margin-inline: auto;
+  }
+
+  /* INTRO STRIP */
+  .intro-section {
+    display: grid; grid-template-columns: 1fr 1fr;
+    gap: 0; min-height: 520px;
+  }
+  .intro-image {
+    background-image: url('https://images.unsplash.com/photo-1464226184884-fa280b87c399?w=900&q=80');
+    background-size: cover; background-position: center;
+    min-height: 420px;
+  }
+  .intro-text {
+    background: var(--parchment);
+    padding: 5rem 4rem;
+    display: flex; flex-direction: column; justify-content: center;
+  }
+  .intro-text h2 {
+    font-family: 'Playfair Display', serif;
+    font-size: 2.4rem; font-weight: 700;
+    color: var(--forest); line-height: 1.2; margin-bottom: 1.3rem;
+  }
+  .intro-text h2 em { font-style: italic; color: var(--walnut); }
+  .intro-text p {
+    color: var(--text-muted); line-height: 1.85;
+    font-size: 0.97rem; margin-bottom: 1.3rem;
+  }
+  .stat-row {
+    display: flex; gap: 2.5rem; margin-top: 1.5rem;
+  }
+  .stat { display: flex; flex-direction: column; }
+  .stat-num {
+    font-family: 'Playfair Display', serif;
+    font-size: 2.4rem; font-weight: 900; color: var(--moss);
+    line-height: 1;
+  }
+  .stat-label {
+    font-family: 'DM Sans', sans-serif; font-size: 0.78rem;
+    color: var(--text-muted); letter-spacing: 0.06em; margin-top: 0.3rem;
+    text-transform: uppercase;
+  }
+
+  /* FARMS GRID */
+  .farms-section {
+    padding: 6rem 3rem;
+    background: var(--cream);
+  }
+  .farms-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+    gap: 2rem; max-width: 1200px; margin: 0 auto;
+  }
+  .farm-card {
+    background: white; border-radius: 16px;
+    overflow: hidden; cursor: pointer;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+    box-shadow: 0 2px 12px rgba(44,74,30,0.08);
+    border: 1px solid rgba(184,207,173,0.3);
+  }
+  .farm-card:hover {
+    transform: translateY(-6px);
+    box-shadow: 0 16px 48px rgba(44,74,30,0.18);
+  }
+  .farm-card-img {
+    height: 210px; background-size: cover; background-position: center;
+    position: relative; overflow: hidden;
+  }
+  .farm-card-img::after {
+    content: ''; position: absolute; inset: 0;
+    background: linear-gradient(to top, rgba(44,74,30,0.55) 0%, transparent 55%);
+  }
+  .farm-badge {
+    position: absolute; top: 1rem; left: 1rem; z-index: 1;
+    background: rgba(44,74,30,0.88);
+    color: var(--sage-light);
+    font-family: 'DM Sans', sans-serif; font-size: 0.7rem;
+    font-weight: 500; letter-spacing: 0.1em; text-transform: uppercase;
+    padding: 0.3rem 0.75rem; border-radius: 2rem;
+    backdrop-filter: blur(4px);
+  }
+  .farm-card-body { padding: 1.5rem 1.6rem 1.8rem; }
+  .farm-card-body h3 {
+    font-family: 'Playfair Display', serif;
+    font-size: 1.3rem; font-weight: 700; color: var(--forest);
+    margin-bottom: 0.35rem;
+  }
+  .farm-location {
+    display: flex; align-items: center; gap: 0.35rem;
+    font-family: 'DM Sans', sans-serif; font-size: 0.8rem;
+    color: var(--text-muted); margin-bottom: 0.9rem;
+  }
+  .farm-location svg { color: var(--caramel); }
+  .farm-card-body p {
+    font-size: 0.88rem; color: var(--text-muted);
+    line-height: 1.7; margin-bottom: 1.2rem;
+  }
+  .farm-card-footer {
+    display: flex; align-items: center; justify-content: space-between;
+    padding-top: 1rem;
+    border-top: 1px solid var(--wheat);
+  }
+  .tour-count {
+    font-family: 'DM Sans', sans-serif; font-size: 0.78rem;
+    color: var(--moss); font-weight: 500;
+  }
+  .card-cta {
+    background: var(--forest); color: white;
+    border: none; padding: 0.5rem 1.2rem; border-radius: 2rem;
+    font-family: 'DM Sans', sans-serif; font-size: 0.8rem;
+    font-weight: 500; cursor: pointer; transition: background 0.2s;
+  }
+  .card-cta:hover { background: var(--moss); }
+
+  /* HOW IT WORKS */
+  .how-section {
+    padding: 6rem 3rem;
+    background: var(--forest);
+    position: relative; overflow: hidden;
+  }
+  .how-section::before {
+    content: ''; position: absolute;
+    top: -60px; right: -60px; width: 400px; height: 400px;
+    border-radius: 50%;
+    background: radial-gradient(circle, rgba(196,137,90,0.15) 0%, transparent 70%);
+  }
+  .how-section .section-header h2 { color: var(--wheat); }
+  .how-section .section-header p { color: var(--sage-light); }
+  .how-section .section-eyebrow { color: var(--caramel); }
+  .steps-grid {
+    display: grid; grid-template-columns: repeat(3, 1fr);
+    gap: 2rem; max-width: 1000px; margin: 0 auto;
+  }
+  .step {
+    text-align: center; padding: 2.5rem 2rem;
+    background: rgba(255,255,255,0.06);
+    border-radius: 16px; border: 1px solid rgba(184,207,173,0.15);
+    transition: background 0.3s;
+  }
+  .step:hover { background: rgba(255,255,255,0.1); }
+  .step-num {
+    width: 52px; height: 52px; border-radius: 50%;
+    background: var(--caramel);
+    display: flex; align-items: center; justify-content: center;
+    font-family: 'Playfair Display', serif;
+    font-size: 1.3rem; font-weight: 900; color: white;
+    margin: 0 auto 1.3rem;
+  }
+  .step h3 {
+    font-family: 'Playfair Display', serif;
+    font-size: 1.1rem; color: var(--wheat); margin-bottom: 0.7rem;
+  }
+  .step p {
+    font-family: 'DM Sans', sans-serif;
+    font-size: 0.85rem; color: var(--sage-light); line-height: 1.75;
+  }
+
+  /* FOOTER */
+  footer {
+    background: var(--soil); padding: 3rem;
+    display: flex; align-items: center; justify-content: space-between;
+    flex-wrap: wrap; gap: 1rem;
+  }
+  .footer-logo {
+    font-family: 'Playfair Display', serif;
+    font-size: 1.4rem; font-weight: 900; font-style: italic;
+    color: var(--wheat);
+  }
+  .footer-logo span { color: var(--caramel); }
+  .footer-text {
+    font-family: 'DM Sans', sans-serif; font-size: 0.78rem;
+    color: rgba(232,213,176,0.45); letter-spacing: 0.04em;
+  }
+
+  /* ===== FARM DETAIL PAGE ===== */
+  .farm-hero {
+    height: 65vh; position: relative;
+    display: flex; align-items: flex-end;
+    overflow: hidden;
+  }
+  .farm-hero-bg {
+    position: absolute; inset: 0;
+    background-size: cover; background-position: center;
+    filter: brightness(0.55) saturate(0.85);
+  }
+  .farm-hero-overlay {
+    position: absolute; inset: 0;
+    background: linear-gradient(to top, rgba(44,74,30,0.9) 0%, transparent 60%);
+  }
+  .farm-hero-content {
+    position: relative; z-index: 1;
+    padding: 3rem 3rem 3.5rem;
+    width: 100%;
+  }
+  .back-btn {
+    display: inline-flex; align-items: center; gap: 0.5rem;
+    background: rgba(255,255,255,0.12); backdrop-filter: blur(6px);
+    border: 1px solid rgba(255,255,255,0.2);
+    color: var(--wheat); padding: 0.5rem 1.1rem;
+    border-radius: 2rem; cursor: pointer;
+    font-family: 'DM Sans', sans-serif; font-size: 0.82rem;
+    font-weight: 500; margin-bottom: 2rem;
+    transition: background 0.2s;
+  }
+  .back-btn:hover { background: rgba(255,255,255,0.2); }
+  .farm-hero-content h1 {
+    font-family: 'Playfair Display', serif;
+    font-size: clamp(2.2rem, 4vw, 3.8rem);
+    font-weight: 900; color: var(--parchment); line-height: 1.1;
+    margin-bottom: 0.8rem;
+  }
+  .farm-hero-meta {
+    display: flex; gap: 1.5rem; flex-wrap: wrap;
+    align-items: center;
+  }
+  .meta-pill {
+    display: flex; align-items: center; gap: 0.4rem;
+    font-family: 'DM Sans', sans-serif; font-size: 0.82rem;
+    color: var(--sage-light);
+  }
+  .meta-pill svg { color: var(--caramel); }
+
+  /* FARM CONTENT */
+  .farm-content { max-width: 1100px; margin: 0 auto; padding: 4rem 3rem; }
+
+  .farm-layout { display: grid; grid-template-columns: 1fr 380px; gap: 3.5rem; align-items: start; }
+
+  .farm-story h2 {
+    font-family: 'Playfair Display', serif;
+    font-size: 1.9rem; font-weight: 700; color: var(--forest);
+    margin-bottom: 1.2rem;
+  }
+  .farm-story p {
+    color: var(--text-muted); line-height: 1.9;
+    font-size: 0.97rem; margin-bottom: 1rem;
+  }
+
+  /* BOOK SIDEBAR */
+  .book-card {
+    background: var(--forest); border-radius: 20px;
+    padding: 2rem; position: sticky; top: 90px;
+    box-shadow: 0 12px 48px rgba(44,74,30,0.25);
+  }
+  .book-card h3 {
+    font-family: 'Playfair Display', serif;
+    font-size: 1.35rem; color: var(--wheat); margin-bottom: 0.4rem;
+  }
+  .book-card p {
+    font-family: 'DM Sans', sans-serif; font-size: 0.83rem;
+    color: var(--sage-light); margin-bottom: 1.5rem; line-height: 1.6;
+  }
+  .date-input {
+    width: 100%; padding: 0.75rem 1rem;
+    border: 1px solid rgba(184,207,173,0.25);
+    border-radius: 10px; background: rgba(255,255,255,0.08);
+    color: var(--wheat); font-family: 'DM Sans', sans-serif;
+    font-size: 0.88rem; margin-bottom: 0.8rem; outline: none;
+    transition: border 0.2s;
+  }
+  .date-input:focus { border-color: var(--caramel); }
+  .date-input::placeholder { color: rgba(184,207,173,0.5); }
+  .book-btn {
+    width: 100%; background: var(--caramel); color: white;
+    border: none; padding: 0.9rem; border-radius: 12px;
+    font-family: 'DM Sans', sans-serif; font-size: 0.95rem;
+    font-weight: 500; cursor: pointer;
+    transition: background 0.2s, transform 0.15s;
+    margin-top: 0.4rem;
+  }
+  .book-btn:hover { background: var(--walnut); transform: translateY(-1px); }
+  .book-note {
+    font-family: 'DM Sans', sans-serif; font-size: 0.74rem;
+    color: rgba(184,207,173,0.5); text-align: center; margin-top: 0.9rem;
+  }
+
+  /* TOURS SECTION */
+  .tours-section { margin-top: 4rem; }
+  .tours-section h2 {
+    font-family: 'Playfair Display', serif;
+    font-size: 1.8rem; font-weight: 700; color: var(--forest);
+    margin-bottom: 0.5rem;
+  }
+  .tours-section > p {
+    color: var(--text-muted); font-size: 0.9rem;
+    margin-bottom: 2rem;
+  }
+  .tour-card {
+    background: white; border-radius: 16px; overflow: hidden;
+    border: 1px solid var(--wheat); margin-bottom: 1.4rem;
+    box-shadow: 0 2px 10px rgba(44,74,30,0.06);
+    transition: box-shadow 0.2s;
+  }
+  .tour-card:hover { box-shadow: 0 6px 24px rgba(44,74,30,0.13); }
+  .tour-card-header {
+    padding: 1.4rem 1.6rem 0;
+    display: flex; justify-content: space-between; align-items: flex-start;
+  }
+  .tour-card-header h4 {
+    font-family: 'Playfair Display', serif;
+    font-size: 1.1rem; font-weight: 700; color: var(--forest);
+  }
+  .tour-card-header p {
+    font-size: 0.84rem; color: var(--text-muted); margin-top: 0.25rem;
+  }
+  .tour-duration {
+    font-family: 'DM Sans', sans-serif; font-size: 0.77rem;
+    color: var(--moss); font-weight: 500; background: rgba(74,114,50,0.1);
+    padding: 0.3rem 0.8rem; border-radius: 2rem; white-space: nowrap;
+    margin-left: 1rem;
+  }
+  .format-options {
+    display: flex; gap: 0.7rem;
+    padding: 1.2rem 1.6rem 1.5rem;
+    flex-wrap: wrap;
+  }
+  .format-btn {
+    flex: 1; min-width: 120px;
+    border: 1.5px solid var(--wheat); border-radius: 12px;
+    padding: 0.9rem 0.7rem;
+    cursor: pointer; background: white;
+    transition: all 0.2s;
+    text-align: center;
+  }
+  .format-btn:hover { border-color: var(--moss); background: rgba(74,114,50,0.04); }
+  .format-btn.active { border-color: var(--moss); background: rgba(74,114,50,0.07); }
+  .format-icon { font-size: 1.4rem; margin-bottom: 0.3rem; }
+  .format-name {
+    font-family: 'DM Sans', sans-serif; font-size: 0.8rem;
+    font-weight: 500; color: var(--forest);
+    display: block;
+  }
+  .format-price {
+    font-family: 'Playfair Display', serif;
+    font-size: 1rem; font-weight: 700;
+    color: var(--caramel); display: block; margin-top: 0.2rem;
+  }
+  .add-tour-btn {
+    margin: 0 1.6rem 1.5rem; width: calc(100% - 3.2rem);
+    background: var(--forest); color: white;
+    border: none; padding: 0.75rem; border-radius: 10px;
+    font-family: 'DM Sans', sans-serif; font-size: 0.88rem;
+    font-weight: 500; cursor: pointer; transition: background 0.2s;
+    display: flex; align-items: center; justify-content: center; gap: 0.4rem;
+  }
+  .add-tour-btn:hover { background: var(--moss); }
+
+  /* TOAST */
+  .toast {
+    position: fixed; bottom: 2rem; right: 2rem; z-index: 999;
+    background: var(--forest); color: var(--wheat);
+    padding: 1rem 1.5rem; border-radius: 12px;
+    font-family: 'DM Sans', sans-serif; font-size: 0.88rem;
+    font-weight: 500; box-shadow: 0 8px 32px rgba(44,74,30,0.35);
+    transform: translateY(80px); opacity: 0;
+    transition: all 0.35s ease; pointer-events: none;
+    display: flex; align-items: center; gap: 0.6rem;
+  }
+  .toast.show { transform: translateY(0); opacity: 1; }
+
+  /* DIVIDER */
+  .divider {
+    width: 60px; height: 3px;
+    background: linear-gradient(90deg, var(--caramel), var(--moss));
+    border-radius: 2px; margin: 1.5rem 0;
+  }
+</style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav>
+  <div class="nav-logo" onclick="showLanding()">Farm<span>stream</span></div>
+  <div class="nav-links">
+    <a href="#" onclick="showLanding()">Farms</a>
+    <a href="#">About</a>
+    <a href="#">How It Works</a>
+    <button class="nav-btn">Sign In</button>
+  </div>
+</nav>
+
+<!-- ===== LANDING PAGE ===== -->
+<div id="page-landing">
+  <!-- HERO -->
+  <section class="hero">
+    <div class="hero-bg"></div>
+    <div class="hero-overlay"></div>
+    <div class="hero-content">
+      <div class="hero-eyebrow">Salinas Valley, California</div>
+      <h1>Explore Farms <em>From Anywhere</em></h1>
+      <p>Step inside the world's most fertile valley. Discover local wineries, organic farms, and artisan producers through immersive virtual tours — from your living room or in full VR.</p>
+      <div class="hero-btns">
+        <button class="btn-primary" onclick="document.getElementById('farms-grid-section').scrollIntoView({behavior:'smooth'})">Browse Farms</button>
+        <button class="btn-outline">Watch Preview</button>
+      </div>
+    </div>
+    <div class="hero-scroll">
+      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 5v14M5 12l7 7 7-7"/></svg>
+      Scroll
+    </div>
+  </section>
+
+  <!-- TRUST BAR -->
+  <div class="trust-bar">
+    <div class="trust-item">
+      <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
+      Verified Local Farms
+    </div>
+    <div class="trust-item">
+      <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="M12 6v6l4 2"/></svg>
+      On-Demand & Live Tours
+    </div>
+    <div class="trust-item">
+      <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg>
+      Salinas Valley, CA
+    </div>
+    <div class="trust-item">
+      <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
+      4.9 / 5 Average Rating
+    </div>
+    <div class="trust-item">
+      <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>
+      3,200+ Visitors This Season
+    </div>
+  </div>
+
+  <!-- INTRO STRIP -->
+  <div class="intro-section">
+    <div class="intro-image"></div>
+    <div class="intro-text">
+      <p class="section-eyebrow" style="font-family:'DM Sans',sans-serif;font-size:0.75rem;letter-spacing:0.2em;text-transform:uppercase;color:var(--caramel);">Our Story</p>
+      <h2>The Valley's Finest, <em>Brought to You</em></h2>
+      <div class="divider"></div>
+      <p>The Salinas Valley has fed California for over a century. We believe its farms deserve to be experienced by the world — not just those who can make the drive.</p>
+      <p>Farmstream partners with family-owned wineries, organic produce farms, and heritage ranches to bring authentic, guided virtual experiences to anyone, anywhere.</p>
+      <div class="stat-row">
+        <div class="stat">
+          <span class="stat-num">18</span>
+          <span class="stat-label">Partner Farms</span>
+        </div>
+        <div class="stat">
+          <span class="stat-num">60+</span>
+          <span class="stat-label">Virtual Tours</span>
+        </div>
+        <div class="stat">
+          <span class="stat-num">3</span>
+          <span class="stat-label">Tour Formats</span>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- FARMS GRID -->
+  <section class="farms-section" id="farms-grid-section">
+    <div class="section-header">
+      <p class="section-eyebrow">Our Partners</p>
+      <h2>Choose Your Farm</h2>
+      <p>Each property has a unique story. Explore vineyards, berry farms, artisan cheese makers, and more across the valley floor.</p>
+    </div>
+    <div class="farms-grid" id="farms-grid"></div>
+  </section>
+
+  <!-- HOW IT WORKS -->
+  <section class="how-section">
+    <div class="section-header">
+      <p class="section-eyebrow">The Process</p>
+      <h2>How Farmstream Works</h2>
+      <p>From your couch to the vineyard in three simple steps.</p>
+    </div>
+    <div class="steps-grid">
+      <div class="step">
+        <div class="step-num">1</div>
+        <h3>Pick a Farm</h3>
+        <p>Browse our curated selection of Salinas Valley farms and wineries. Read their stories and see available tours.</p>
+      </div>
+      <div class="step">
+        <div class="step-num">2</div>
+        <h3>Choose Your Format</h3>
+        <p>Select from a guided Video tour ($5), an interactive Point-and-Click experience ($7), or full VR immersion ($15).</p>
+      </div>
+      <div class="step">
+        <div class="step-num">3</div>
+        <h3>Explore & Enjoy</h3>
+        <p>Watch instantly or book a live guided session. Every ticket supports the farm family directly.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- FOOTER -->
+  <footer>
+    <div class="footer-logo">Farm<span>stream</span></div>
+    <div class="footer-text">© 2025 Farmstream · Salinas Valley, California · Connecting the World to Our Farmers</div>
+  </footer>
+</div>
+
+<!-- ===== FARM DETAIL PAGE ===== -->
+<div id="page-farm"></div>
+
+<!-- TOAST -->
+<div class="toast" id="toast">
+  <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg>
+  <span id="toast-msg">Added to cart!</span>
+</div>
+
+<script>
+const farms = [
+  {
+    id: 1,
+    name: "Calera Vineyard Estate",
+    type: "Winery",
+    location: "Mount Harlan, CA",
+    tagline: "Pioneering Pinot in the Heart of the Valley",
+    summary: "Nestled on the limestone slopes of Mount Harlan, Calera Vineyard Estate has been crafting world-class Pinot Noir since 1975. Founded by Josh Jensen after years of studying Burgundy's terroir-driven wines, the estate sits at 2,200 feet elevation — an unlikely but magical site that produces wines of stunning complexity. Three generations of the Jensen family have tended these vines by hand, believing that great wine is grown, not made.",
+    summary2: "Today, the 100-acre estate includes five distinct single-vineyard blocks, each with its own personality shaped by slope, aspect, and soil depth. Visitors to our virtual tour will walk the rows at harvest, step inside the gravity-flow winery, and taste vicariously through the eyes of head winemaker Maria Jensen.",
+    img: "https://images.unsplash.com/photo-1506377585622-bedcbb5a8cfc?w=1200&q=80",
+    thumb: "https://images.unsplash.com/photo-1506377585622-bedcbb5a8cfc?w=600&q=80",
+    tours: [
+      { name: "Harvest Day in the Vineyard", desc: "Walk the rows during peak harvest season with head winemaker Maria Jensen.", duration: "45 min" },
+      { name: "Cellar & Barrel Tasting", desc: "An intimate look at barrel aging, blending trials, and what makes each vintage unique.", duration: "30 min" },
+    ]
+  },
+  {
+    id: 2,
+    name: "Earthbound Farm Organics",
+    type: "Organic Farm",
+    location: "Carmel Valley, CA",
+    tagline: "America's Largest Organic Farm, Right Here",
+    summary: "What began as a 2.5-acre raspberry patch in 1984 has grown into one of the most celebrated organic farms in the country. Drew and Myra Goodman started Earthbound Farm with a simple conviction: food should be grown the way nature intended, without synthetic pesticides or fertilizers. That founding ethos still guides every decision made on the farm's 50,000 acres of certified organic land today.",
+    summary2: "Our virtual tour takes guests deep into the living soil that makes Earthbound's produce so extraordinary — you'll witness a full growing cycle from seed germination to the refrigerated packing house where your salad mix is born.",
+    img: "https://images.unsplash.com/photo-1416879595882-3373a0480b5b?w=1200&q=80",
+    thumb: "https://images.unsplash.com/photo-1416879595882-3373a0480b5b?w=600&q=80",
+    tours: [
+      { name: "Seed-to-Shelf: The Organic Journey", desc: "Follow a head of lettuce from seedling to your salad bowl across 50,000 organic acres.", duration: "40 min" },
+      { name: "Meet the Soil Scientists", desc: "A deep dive into the microbiome work that keeps Earthbound's soil thriving without chemicals.", duration: "35 min" },
+      { name: "Sunrise Harvest Walk", desc: "Join the early morning crew as they harvest in the cool Carmel Valley air.", duration: "25 min" },
+    ]
+  },
+  {
+    id: 3,
+    name: "Manzana Cider Works",
+    type: "Cidery & Orchard",
+    location: "Watsonville, CA",
+    tagline: "Heritage Apples, Old World Craft",
+    summary: "The Watsonville Pajaro Valley has grown apples since the 1850s, and Manzana Cider Works is its proudest inheritor. Third-generation orchardist Rosa Delgado-Morales tends over 40 heritage apple varieties — many of them nearly extinct — on gently rolling hillsides that catch the Pacific fog every morning. Her ciders are fermented slowly in French oak, dry and complex in the European tradition.",
+    summary2: "On your virtual tour you'll wander the orchard rows in peak bloom, learn to identify heritage varieties by sight and scent, and peer inside the centuries-old fermenting cellar Rosa converted from her grandfather's dairy barn.",
+    img: "https://images.unsplash.com/photo-1560493676-04071c5f467b?w=1200&q=80",
+    thumb: "https://images.unsplash.com/photo-1560493676-04071c5f467b?w=600&q=80",
+    tours: [
+      { name: "Orchard in Bloom", desc: "Spring at Manzana — 40 heritage varieties in full flower, guided by Rosa herself.", duration: "35 min" },
+      { name: "From Press to Barrel", desc: "Watch a full pressing and fermentation setup from apple sorting to yeast pitching.", duration: "45 min" },
+    ]
+  },
+  {
+    id: 4,
+    name: "Rancho Cielo Cheese",
+    type: "Artisan Creamery",
+    location: "Gonzales, CA",
+    tagline: "Hand-Crafted Farmstead Cheese Since 1991",
+    summary: "On a wind-sheltered ranch outside Gonzales, the Figueroa family has been milking their small herd of Jersey and Brown Swiss cows for over thirty years, turning that exceptionally rich milk into farmstead cheeses that have won national recognition. Cheesemaker Elena Figueroa trained in the Loire Valley of France before returning home to carry on her parents' legacy with a European flair.",
+    summary2: "The virtual tour of Rancho Cielo is one of our most intimate — guests witness the 4 AM milking, watch Elena hand-ladle fresh curds, and explore the natural cave where wheels of aged manchego-style cheese develop their complex rinds over six months.",
+    img: "https://images.unsplash.com/photo-1500595046743-cd271d694d30?w=1200&q=80",
+    thumb: "https://images.unsplash.com/photo-1500595046743-cd271d694d30?w=600&q=80",
+    tours: [
+      { name: "Morning Milking & Creamery", desc: "The full cycle from 4 AM milking to the first fresh curds of the day.", duration: "50 min" },
+      { name: "Aging Cave Deep Dive", desc: "Explore the cave where 200 wheels of cheese silently develop for 6+ months.", duration: "30 min" },
+    ]
+  },
+  {
+    id: 5,
+    name: "Pacific Rim Strawberry Farm",
+    type: "Berry Farm",
+    location: "Castroville, CA",
+    tagline: "Where the Ocean Air Makes Every Berry Sweeter",
+    summary: "Just three miles from Monterey Bay, the cool morning fog and sandy loam of Castroville create near-perfect conditions for strawberries. The Nguyen family has farmed this 80-acre plot for two decades, growing four distinct berry varieties that ripen at different times to extend the harvest season from March through October.",
+    summary2: "Virtual visitors get an unprecedented look at how a family-run berry operation actually works — from the delicate hand-picking techniques that keep berries shelf-stable longer, to the innovative frost protection systems the Nguyens pioneered to survive surprise late-season freezes.",
+    img: "https://images.unsplash.com/photo-1533038590840-1cde6e668a91?w=1200&q=80",
+    thumb: "https://images.unsplash.com/photo-1533038590840-1cde6e668a91?w=600&q=80",
+    tours: [
+      { name: "Picking at First Light", desc: "Join the harvest crew at dawn as morning dew still clings to the berries.", duration: "30 min" },
+      { name: "Season-Long Growing Story", desc: "A compressed look at the full growing season from planting to the last harvest.", duration: "55 min" },
+      { name: "Frost Night Emergency", desc: "The dramatic story of a March freeze — and how the Nguyens saved their crop.", duration: "25 min" },
+    ]
+  },
+  {
+    id: 6,
+    name: "Salinas Valley Lavender Co.",
+    type: "Specialty Farm",
+    location: "Soledad, CA",
+    tagline: "A Purple Horizon in the Lettuce Capital",
+    summary: "Tucked between conventional vegetable operations, the 12-acre lavender farm run by the Okonkwo family is Soledad's most unexpected sight — and one of its most beloved. Adaeze Okonkwo planted her first lavender starts in 2008 after leaving a career in fragrance development in Paris, convinced that California's Mediterranean climate could produce something extraordinary.",
+    summary2: "She was right. Salinas Valley Lavender now supplies essential oils to boutique perfumers across Europe and North America, while also offering a full agritourism experience. The virtual tour captures the farm at peak bloom in late June — a sea of violet that draws visitors from across the state.",
+    img: "https://images.unsplash.com/photo-1455577380025-4321f1e1daea?w=1200&q=80",
+    thumb: "https://images.unsplash.com/photo-1455577380025-4321f1e1daea?w=600&q=80",
+    tours: [
+      { name: "Peak Bloom: The Purple Hour", desc: "Golden hour across 12 acres of lavender at the height of June bloom.", duration: "25 min" },
+      { name: "Distillation & Fragrance Lab", desc: "Watch the steam distillation process that turns flowers into precious essential oil.", duration: "40 min" },
+    ]
+  }
+];
+
+function renderFarmsGrid() {
+  const grid = document.getElementById('farms-grid');
+  grid.innerHTML = farms.map(f => `
+    <div class="farm-card" onclick="showFarm(${f.id})">
+      <div class="farm-card-img" style="background-image:url('${f.thumb}')">
+        <span class="farm-badge">${f.type}</span>
+      </div>
+      <div class="farm-card-body">
+        <h3>${f.name}</h3>
+        <div class="farm-location">
+          <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg>
+          ${f.location}
+        </div>
+        <p>${f.tagline}</p>
+        <div class="farm-card-footer">
+          <span class="tour-count">${f.tours.length} tours available</span>
+          <button class="card-cta">Explore →</button>
+        </div>
+      </div>
+    </div>
+  `).join('');
+}
+
+function showFarm(id) {
+  const farm = farms.find(f => f.id === id);
+  if (!farm) return;
+  window.scrollTo(0, 0);
+
+  const tourCards = farm.tours.map((tour, i) => `
+    <div class="tour-card" id="tour-${id}-${i}">
+      <div class="tour-card-header">
+        <div>
+          <h4>${tour.name}</h4>
+          <p>${tour.desc}</p>
+        </div>
+        <span class="tour-duration">⏱ ${tour.duration}</span>
+      </div>
+      <div class="format-options">
+        <div class="format-btn active" onclick="selectFormat(this, ${id}, ${i})">
+          <div class="format-icon">🎬</div>
+          <span class="format-name">Video</span>
+          <span class="format-price">$5</span>
+        </div>
+        <div class="format-btn" onclick="selectFormat(this, ${id}, ${i})">
+          <div class="format-icon">🖱️</div>
+          <span class="format-name">Point-and-Click</span>
+          <span class="format-price">$7</span>
+        </div>
+        <div class="format-btn" onclick="selectFormat(this, ${id}, ${i})">
+          <div class="format-icon">🥽</div>
+          <span class="format-name">VR Experience</span>
+          <span class="format-price">$15</span>
+        </div>
+      </div>
+      <button class="add-tour-btn" onclick="addToCart('${tour.name}', ${id}, ${i})">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+        Add to Cart
+      </button>
+    </div>
+  `).join('');
+
+  document.getElementById('page-farm').innerHTML = `
+    <div class="farm-hero">
+      <div class="farm-hero-bg" style="background-image:url('${farm.img}')"></div>
+      <div class="farm-hero-overlay"></div>
+      <div class="farm-hero-content">
+        <button class="back-btn" onclick="showLanding()">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M19 12H5M12 19l-7-7 7-7"/></svg>
+          All Farms
+        </button>
+        <h1>${farm.name}</h1>
+        <div class="farm-hero-meta">
+          <div class="meta-pill">
+            <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg>
+            ${farm.location}
+          </div>
+          <div class="meta-pill">
+            <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="18" height="18" rx="2"/><path d="M3 9h18M9 21V9"/></svg>
+            ${farm.type}
+          </div>
+          <div class="meta-pill">
+            <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
+            ${farm.tours.length} Tours Available
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="farm-content">
+      <div class="farm-layout">
+        <div>
+          <div class="farm-story">
+            <h2>Our Story</h2>
+            <div class="divider"></div>
+            <p>${farm.summary}</p>
+            <p>${farm.summary2}</p>
+          </div>
+          <div class="tours-section">
+            <h2>Virtual Tours</h2>
+            <p>Choose a tour experience below. Select your preferred format, then add it to your cart.</p>
+            ${tourCards}
+          </div>
+        </div>
+        <div>
+          <div class="book-card">
+            <h3>Book a Live Tour</h3>
+            <p>Join a real-time guided experience led by the farmers themselves. Limited spots per session.</p>
+            <input class="date-input" type="text" placeholder="Select a date" onfocus="this.type='date'">
+            <input class="date-input" type="time" placeholder="Preferred time" value="10:00">
+            <select class="date-input" style="cursor:pointer">
+              <option>Video Session — $5</option>
+              <option>Point-and-Click — $7</option>
+              <option selected>VR Guided — $15</option>
+            </select>
+            <button class="book-btn" onclick="showToast('Live tour booked! Check your email. 📅')">Reserve My Spot</button>
+            <p class="book-note">Free cancellation up to 48 hours before your session</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  `;
+
+  document.getElementById('page-landing').style.display = 'none';
+  document.getElementById('page-farm').style.display = 'block';
+}
+
+function showLanding() {
+  document.getElementById('page-landing').style.display = 'block';
+  document.getElementById('page-farm').style.display = 'none';
+  window.scrollTo(0, 0);
+}
+
+function selectFormat(btn, farmId, tourIdx) {
+  const card = document.getElementById(`tour-${farmId}-${tourIdx}`);
+  card.querySelectorAll('.format-btn').forEach(b => b.classList.remove('active'));
+  btn.classList.add('active');
+}
+
+function addToCart(tourName, farmId, tourIdx) {
+  const card = document.getElementById(`tour-${farmId}-${tourIdx}`);
+  const active = card.querySelector('.format-btn.active');
+  const format = active.querySelector('.format-name').textContent;
+  const price = active.querySelector('.format-price').textContent;
+  showToast(`Added "${tourName}" (${format} · ${price}) to cart 🛒`);
+}
+
+function showToast(msg) {
+  const t = document.getElementById('toast');
+  document.getElementById('toast-msg').textContent = msg;
+  t.classList.add('show');
+  setTimeout(() => t.classList.remove('show'), 3200);
+}
+
+renderFarmsGrid();
+</script>
+</body>
+</html>
