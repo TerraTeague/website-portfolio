@@ -1,0 +1,815 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Mason & Associates Tax Service | Auburn, CA</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,300..700;1,9..144,400..600&family=Inter:wght@400;500;600;700&family=Caveat:wght@600;700&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --pine:#21392E;
+    --pine-deep:#162720;
+    --gold:#C8923B;
+    --cream:#F6F1E7;
+    --sage:#DFE6DC;
+    --charcoal:#252622;
+    --rust:#B0533A;
+    --line:#cdd4c7;
+  }
+
+  *{margin:0;padding:0;box-sizing:border-box;}
+
+  html{scroll-behavior:smooth;}
+
+  body{
+    font-family:'Inter',sans-serif;
+    background:var(--cream);
+    color:var(--charcoal);
+    line-height:1.6;
+  }
+
+  h1,h2,h3,h4{
+    font-family:'Fraunces',serif;
+    font-weight:600;
+    letter-spacing:-0.01em;
+    color:var(--pine-deep);
+  }
+
+  a{color:inherit;}
+
+  .wrap{
+    max-width:1140px;
+    margin:0 auto;
+    padding:0 28px;
+  }
+
+  /* ---------- NAV ---------- */
+  header{
+    background:var(--pine);
+    color:var(--cream);
+    position:sticky;
+    top:0;
+    z-index:50;
+    border-bottom:1px solid rgba(255,255,255,0.08);
+  }
+  nav{
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+    padding:16px 28px;
+    max-width:1140px;
+    margin:0 auto;
+  }
+  .brand{
+    font-family:'Fraunces',serif;
+    font-weight:600;
+    font-size:1.35rem;
+    color:var(--cream);
+    display:flex;
+    flex-direction:column;
+    line-height:1.1;
+  }
+  .brand span{
+    font-family:'Inter',sans-serif;
+    font-size:0.68rem;
+    font-weight:500;
+    letter-spacing:0.18em;
+    text-transform:uppercase;
+    color:var(--gold);
+    margin-top:3px;
+  }
+  .nav-links{
+    display:flex;
+    gap:28px;
+    align-items:center;
+    font-size:0.92rem;
+    font-weight:500;
+  }
+  .nav-links a{
+    text-decoration:none;
+    color:var(--cream);
+    opacity:0.85;
+    transition:opacity .15s;
+  }
+  .nav-links a:hover{opacity:1;}
+  .nav-cta{
+    background:var(--gold);
+    color:var(--pine-deep)!important;
+    padding:10px 18px;
+    border-radius:3px;
+    opacity:1!important;
+    font-weight:600;
+    font-size:0.85rem;
+  }
+  .nav-toggle{display:none;}
+
+  /* ---------- HERO ---------- */
+  .hero{
+    background:var(--pine);
+    color:var(--cream);
+    padding:72px 0 0;
+    overflow:hidden;
+  }
+  .hero-grid{
+    display:grid;
+    grid-template-columns:1.1fr 0.9fr;
+    gap:48px;
+    align-items:center;
+  }
+  .hero-eyebrow{
+    display:inline-block;
+    font-size:0.78rem;
+    letter-spacing:0.22em;
+    text-transform:uppercase;
+    color:var(--gold);
+    font-weight:600;
+    margin-bottom:18px;
+  }
+  .hero h1{
+    color:var(--cream);
+    font-size:3rem;
+    line-height:1.12;
+    margin-bottom:22px;
+  }
+  .hero h1 em{
+    font-style:italic;
+    color:var(--gold);
+  }
+  .hero p{
+    font-size:1.08rem;
+    color:#D9E2D6;
+    max-width:480px;
+    margin-bottom:32px;
+  }
+  .hero-actions{
+    display:flex;
+    gap:14px;
+    flex-wrap:wrap;
+  }
+  .btn{
+    display:inline-block;
+    padding:14px 26px;
+    border-radius:3px;
+    font-weight:600;
+    font-size:0.92rem;
+    text-decoration:none;
+    border:1px solid transparent;
+    transition:transform .12s, background .15s;
+  }
+  .btn:hover{transform:translateY(-1px);}
+  .btn-gold{
+    background:var(--gold);
+    color:var(--pine-deep);
+  }
+  .btn-gold:hover{background:#d8a559;}
+  .btn-outline{
+    border:1px solid rgba(246,241,231,0.4);
+    color:var(--cream);
+  }
+  .btn-outline:hover{background:rgba(246,241,231,0.08);}
+
+  .hero-photo-wrap{
+    position:relative;
+    padding:10px 10px 36px 0;
+  }
+  .hero-photo{
+    border-radius:4px;
+    overflow:hidden;
+    box-shadow:0 24px 50px -18px rgba(0,0,0,0.55);
+    border:6px solid var(--cream);
+    transform:rotate(1.2deg);
+  }
+  .hero-photo img{
+    display:block;
+    width:100%;
+    height:380px;
+    object-fit:cover;
+    object-position:60% 40%;
+  }
+  .photo-sticker{
+    position:absolute;
+    bottom:-6px;
+    left:-26px;
+    background:var(--gold);
+    color:var(--pine-deep);
+    font-family:'Caveat',cursive;
+    font-weight:700;
+    font-size:1.28rem;
+    padding:10px 20px 12px;
+    border-radius:3px;
+    transform:rotate(-6deg);
+    box-shadow:0 10px 24px -10px rgba(0,0,0,0.5);
+    max-width:230px;
+    line-height:1.2;
+  }
+  .photo-caption{
+    margin-top:14px;
+    font-size:0.82rem;
+    color:#AEC0AC;
+    font-style:italic;
+    padding-left:6px;
+  }
+
+  /* ---------- SECTION SHELL ---------- */
+  section{
+    padding:84px 0;
+  }
+  .section-head{
+    max-width:620px;
+    margin-bottom:48px;
+  }
+  .eyebrow{
+    display:inline-block;
+    font-size:0.78rem;
+    letter-spacing:0.22em;
+    text-transform:uppercase;
+    color:var(--rust);
+    font-weight:700;
+    margin-bottom:14px;
+  }
+  .section-head h2{
+    font-size:2.1rem;
+    margin-bottom:14px;
+  }
+  .section-head p{
+    color:#5b5f57;
+    font-size:1.02rem;
+  }
+
+  /* ---------- ABOUT ---------- */
+  .about{background:var(--cream);}
+  .about-grid{
+    display:grid;
+    grid-template-columns:1fr 1fr;
+    gap:56px;
+    align-items:start;
+  }
+  .about-copy p{
+    margin-bottom:16px;
+    color:#444840;
+  }
+  .timeline{
+    border-left:2px solid var(--line);
+    padding-left:28px;
+    position:relative;
+  }
+  .timeline-item{
+    margin-bottom:34px;
+    position:relative;
+  }
+  .timeline-item:last-child{margin-bottom:0;}
+  .timeline-item::before{
+    content:'';
+    position:absolute;
+    left:-34.5px;
+    top:4px;
+    width:11px;
+    height:11px;
+    border-radius:50%;
+    background:var(--gold);
+    border:3px solid var(--cream);
+    box-shadow:0 0 0 2px var(--pine);
+  }
+  .timeline-year{
+    font-family:'Fraunces',serif;
+    font-weight:600;
+    color:var(--pine);
+    font-size:1.05rem;
+    margin-bottom:4px;
+  }
+  .timeline-item p{
+    color:#555a51;
+    font-size:0.96rem;
+  }
+
+  /* ---------- SERVICES ---------- */
+  .services{background:var(--sage);}
+  .services-grid{
+    display:grid;
+    grid-template-columns:repeat(3, 1fr);
+    gap:24px;
+  }
+  .service-card{
+    background:var(--cream);
+    border:1px solid var(--line);
+    border-radius:4px;
+    padding:30px 26px;
+    transition:border-color .15s, transform .15s;
+  }
+  .service-card:hover{
+    border-color:var(--gold);
+    transform:translateY(-3px);
+  }
+  .service-icon{
+    width:42px;
+    height:42px;
+    border-radius:3px;
+    background:var(--pine);
+    color:var(--gold);
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    margin-bottom:18px;
+    font-family:'Fraunces',serif;
+    font-weight:600;
+    font-size:1.1rem;
+  }
+  .service-card h3{
+    font-size:1.12rem;
+    margin-bottom:8px;
+  }
+  .service-card p{
+    font-size:0.92rem;
+    color:#5b5f57;
+  }
+
+  /* ---------- TESTIMONIALS ---------- */
+  .testimonials{background:var(--pine);color:var(--cream);}
+  .testimonials .section-head h2,
+  .testimonials .section-head p{color:var(--cream);}
+  .testimonials .section-head p{color:#cbd6c8;}
+  .testimonials .eyebrow{color:var(--gold);}
+  .testi-grid{
+    display:grid;
+    grid-template-columns:repeat(3,1fr);
+    gap:24px;
+  }
+  .testi-card{
+    background:rgba(246,241,231,0.05);
+    border:1px solid rgba(246,241,231,0.14);
+    border-radius:4px;
+    padding:28px;
+  }
+  .testi-stars{
+    color:var(--gold);
+    letter-spacing:2px;
+    margin-bottom:14px;
+    font-size:0.95rem;
+  }
+  .testi-card p{
+    font-size:0.96rem;
+    color:#E4EBE1;
+    margin-bottom:18px;
+  }
+  .testi-name{
+    font-family:'Fraunces',serif;
+    font-weight:600;
+    color:var(--cream);
+    font-size:0.95rem;
+  }
+  .testi-loc{
+    font-size:0.8rem;
+    color:#9DB29A;
+  }
+
+  /* ---------- BOOKING / PORTAL ---------- */
+  .action-band{
+    background:var(--cream);
+  }
+  .action-grid{
+    display:grid;
+    grid-template-columns:1fr 1fr;
+    gap:24px;
+  }
+  .action-card{
+    border-radius:6px;
+    padding:38px;
+    position:relative;
+    overflow:hidden;
+  }
+  .action-card.book{
+    background:var(--gold);
+    color:var(--pine-deep);
+  }
+  .action-card.portal{
+    background:var(--pine);
+    color:var(--cream);
+  }
+  .action-card h3{
+    font-size:1.5rem;
+    margin-bottom:10px;
+  }
+  .action-card.book h3{color:var(--pine-deep);}
+  .action-card.portal h3{color:var(--cream);}
+  .action-card p{
+    margin-bottom:22px;
+    font-size:0.96rem;
+    max-width:380px;
+  }
+  .action-card.book p{color:#54421f;}
+  .action-card.portal p{color:#cfdacb;}
+  .calendar-mini{
+    display:grid;
+    grid-template-columns:repeat(7,1fr);
+    gap:6px;
+    margin:0 0 24px;
+    max-width:320px;
+  }
+  .calendar-mini .day-label{
+    font-size:0.68rem;
+    text-align:center;
+    font-weight:700;
+    color:#7a5c28;
+    text-transform:uppercase;
+  }
+  .calendar-mini .day{
+    aspect-ratio:1;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    background:rgba(255,255,255,0.55);
+    border-radius:3px;
+    font-size:0.78rem;
+    color:#54421f;
+  }
+  .calendar-mini .day.avail{
+    background:var(--pine-deep);
+    color:var(--cream);
+    font-weight:600;
+    cursor:pointer;
+  }
+  .calendar-mini .day.muted{opacity:0.35;}
+  .portal-row{
+    display:flex;
+    align-items:center;
+    gap:12px;
+    background:rgba(246,241,231,0.07);
+    border:1px solid rgba(246,241,231,0.18);
+    border-radius:4px;
+    padding:14px 16px;
+    margin-bottom:24px;
+    font-size:0.88rem;
+  }
+  .portal-row .dot{
+    width:8px;height:8px;border-radius:50%;
+    background:var(--gold);
+    flex-shrink:0;
+  }
+  .btn-pine{
+    background:var(--pine-deep);
+    color:var(--cream);
+  }
+  .btn-pine:hover{background:#0f1e17;}
+  .btn-cream{
+    background:var(--cream);
+    color:var(--pine-deep);
+  }
+  .btn-cream:hover{background:#fff;}
+
+  /* ---------- FAQ ---------- */
+  .faq{background:var(--sage);}
+  .faq-list{
+    border-top:1px solid var(--line);
+  }
+  .faq-item{
+    border-bottom:1px solid var(--line);
+  }
+  .faq-q{
+    width:100%;
+    background:none;
+    border:none;
+    text-align:left;
+    padding:22px 0;
+    font-family:'Fraunces',serif;
+    font-weight:600;
+    font-size:1.05rem;
+    color:var(--pine-deep);
+    cursor:pointer;
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    gap:16px;
+  }
+  .faq-q .icon{
+    font-family:'Inter',sans-serif;
+    font-weight:600;
+    font-size:1.3rem;
+    color:var(--rust);
+    transition:transform .2s;
+    flex-shrink:0;
+  }
+  .faq-item.open .faq-q .icon{transform:rotate(45deg);}
+  .faq-a{
+    max-height:0;
+    overflow:hidden;
+    transition:max-height .25s ease;
+  }
+  .faq-a-inner{
+    padding-bottom:22px;
+    color:#52564c;
+    font-size:0.96rem;
+    max-width:680px;
+  }
+  .faq-item.open .faq-a{max-height:240px;}
+
+  /* ---------- FOOTER ---------- */
+  footer{
+    background:var(--pine-deep);
+    color:#B9C7B5;
+    padding:56px 0 28px;
+    font-size:0.9rem;
+  }
+  .footer-grid{
+    display:grid;
+    grid-template-columns:1.4fr 1fr 1fr;
+    gap:40px;
+    margin-bottom:40px;
+  }
+  footer h4{
+    color:var(--cream);
+    font-size:1rem;
+    margin-bottom:14px;
+  }
+  footer .brand-foot{
+    font-family:'Fraunces',serif;
+    font-size:1.2rem;
+    color:var(--cream);
+    margin-bottom:10px;
+  }
+  footer p{margin-bottom:8px;}
+  footer ul{list-style:none;}
+  footer ul li{margin-bottom:8px;}
+  footer ul a{text-decoration:none;color:#B9C7B5;}
+  footer ul a:hover{color:var(--gold);}
+  .footer-bottom{
+    border-top:1px solid rgba(255,255,255,0.08);
+    padding-top:22px;
+    display:flex;
+    justify-content:space-between;
+    flex-wrap:wrap;
+    gap:12px;
+    font-size:0.8rem;
+    color:#7f9079;
+  }
+
+  /* ---------- RESPONSIVE ---------- */
+  @media (max-width: 900px){
+    .nav-links{display:none;}
+    .hero-grid, .about-grid, .action-grid{grid-template-columns:1fr;}
+    .services-grid, .testi-grid{grid-template-columns:1fr;}
+    .footer-grid{grid-template-columns:1fr;}
+    .hero h1{font-size:2.2rem;}
+    .hero-photo img{height:300px;}
+    .photo-sticker{left:14px;}
+  }
+
+  @media (prefers-reduced-motion: reduce){
+    *{transition:none!important;}
+  }
+</style>
+</head>
+<body>
+
+<header>
+  <nav>
+    <div class="brand">Mason &amp; Associates
+      <span>Tax &amp; Accounting · Auburn, CA</span>
+    </div>
+    <div class="nav-links">
+      <a href="#services">Services</a>
+      <a href="#about">About</a>
+      <a href="#reviews">Reviews</a>
+      <a href="#faq">FAQ</a>
+      <a href="#schedule" class="nav-cta">Book Appointment</a>
+    </div>
+  </nav>
+</header>
+
+<!-- ============ HERO ============ -->
+<section class="hero">
+  <div class="wrap hero-grid">
+    <div>
+      <span class="hero-eyebrow">Enrolled Agent · Unlimited IRS Representation</span>
+      <h1>Tax help from someone who'll <em>still be here</em> next April.</h1>
+      <p>Glenn Mason, EA has prepared returns for Sierra foothills families and small businesses since 1994 — first in Truckee, now from our Auburn office. No call centers, no rotating staff, no surprises in your mailbox come October.</p>
+      <div class="hero-actions">
+        <a href="#schedule" class="btn btn-gold">Schedule a Consultation</a>
+        <a href="#portal" class="btn btn-outline">Client Document Portal</a>
+      </div>
+    </div>
+    <div class="hero-photo-wrap">
+      <div class="hero-photo">
+        <img src="glenn.jpg" alt="Glenn Mason at a lakeside table near Lake Tahoe">
+      </div>
+      <div class="photo-sticker">studio headshot:<br>still pending since 2019</div>
+      <p class="photo-caption">Glenn, on a rare afternoon off near Lake Tahoe. We promise he's more buttoned-up at his desk.</p>
+    </div>
+  </div>
+</section>
+
+<!-- ============ ABOUT ============ -->
+<section class="about" id="about">
+  <div class="wrap about-grid">
+    <div class="about-copy">
+      <span class="eyebrow">About the Firm</span>
+      <h2>Three decades, two towns, one set of books.</h2>
+      <p>Mason &amp; Associates Tax Service got its start in Truckee, California — a place where the tax season overlaps a little too neatly with ski season. Glenn built his practice there working with year-round residents, seasonal business owners, and the occasional rental-cabin investor trying to make sense of depreciation schedules at 6,000 feet.</p>
+      <p>In 2012, the firm relocated its main office down the hill to Auburn, putting Glenn closer to a growing base of clients in Placer and Nevada counties while staying within easy reach of long-time Truckee families. He still keeps a presence up in Truckee, especially in the weeks leading up to filing deadlines, for clients who'd rather not make the drive.</p>
+      <p>Today, Glenn Steven Mason, EA continues to run the practice himself: same person preparing your return, same person you'll talk to if the IRS sends a letter.</p>
+    </div>
+    <div class="timeline">
+      <div class="timeline-item">
+        <div class="timeline-year">1994 — Truckee, CA</div>
+        <p>Mason &amp; Associates opens its doors, serving year-round and seasonal residents of the Tahoe-Truckee area.</p>
+      </div>
+      <div class="timeline-item">
+        <div class="timeline-year">2012 — Move to Auburn</div>
+        <p>The firm relocates its primary office to 1319 Vintage Way, Auburn, expanding into the Sacramento foothills market.</p>
+      </div>
+      <div class="timeline-item">
+        <div class="timeline-year">Today — Two Counties, One Desk</div>
+        <p>Glenn continues to serve both communities, with seasonal Truckee availability for established clients.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ SERVICES ============ -->
+<section class="services" id="services">
+  <div class="wrap">
+    <div class="section-head">
+      <span class="eyebrow">What We Handle</span>
+      <h2>Services built around year-round needs, not just April.</h2>
+      <p>From a single W-2 to a multi-entity small business, here's where Mason &amp; Associates can take work off your plate.</p>
+    </div>
+    <div class="services-grid">
+      <div class="service-card">
+        <div class="service-icon">1</div>
+        <h3>Individual Tax Preparation</h3>
+        <p>Federal and California returns for individuals and families, including multi-state filings for seasonal residents.</p>
+      </div>
+      <div class="service-card">
+        <div class="service-icon">2</div>
+        <h3>Business &amp; Corporate Returns</h3>
+        <p>S-corps, partnerships, LLCs, and sole proprietorships — accurate filings with an eye toward what's coming next year.</p>
+      </div>
+      <div class="service-card">
+        <div class="service-icon">3</div>
+        <h3>Bookkeeping &amp; Payroll</h3>
+        <p>Monthly bookkeeping, reconciliations, and payroll processing so your books are ready well before tax season starts.</p>
+      </div>
+      <div class="service-card">
+        <div class="service-icon">4</div>
+        <h3>IRS Audit Representation</h3>
+        <p>As an Enrolled Agent, Glenn has unlimited rights to represent you directly before the IRS — audits, notices, and appeals.</p>
+      </div>
+      <div class="service-card">
+        <div class="service-icon">5</div>
+        <h3>Tax Planning &amp; Strategy</h3>
+        <p>Mid-year and year-end planning sessions to manage estimated payments, withholding, and major life or business changes.</p>
+      </div>
+      <div class="service-card">
+        <div class="service-icon">6</div>
+        <h3>Business Formation &amp; Consulting</h3>
+        <p>Guidance on entity selection, registration, and ongoing structure for new and growing local businesses.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ TESTIMONIALS ============ -->
+<section class="testimonials" id="reviews">
+  <div class="wrap">
+    <div class="section-head">
+      <span class="eyebrow">Client Notes</span>
+      <h2>What clients say after working with Glenn.</h2>
+      <p>A few notes from longtime clients in Auburn, Grass Valley, and Truckee.</p>
+    </div>
+    <div class="testi-grid">
+      <div class="testi-card">
+        <div class="testi-stars">★★★★★</div>
+        <p>"We've used Glenn for our small business taxes for almost ten years. He actually picks up the phone, which is rare these days, and he's never once made us feel rushed."</p>
+        <div class="testi-name">Donna R.</div>
+        <div class="testi-loc">Auburn, CA</div>
+      </div>
+      <div class="testi-card">
+        <div class="testi-stars">★★★★★</div>
+        <p>"Glenn handled an IRS notice for us that honestly had us pretty stressed out. He took it from there, explained everything in plain English, and it got resolved quietly."</p>
+        <div class="testi-name">Mike T.</div>
+        <div class="testi-loc">Truckee, CA</div>
+      </div>
+      <div class="testi-card">
+        <div class="testi-stars">★★★★★</div>
+        <p>"I've followed Mason & Associates from Truckee down to Auburn and would happily drive further than that. Same guy, same level of attention every year."</p>
+        <div class="testi-name">Linda S.</div>
+        <div class="testi-loc">Grass Valley, CA</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ BOOKING + PORTAL ============ -->
+<section class="action-band" id="schedule">
+  <div class="wrap">
+    <div class="section-head">
+      <span class="eyebrow">Get Started</span>
+      <h2>Book a time, or send your documents ahead.</h2>
+      <p>Pick a consultation slot that works for you, or upload your documents securely before your appointment so Glenn can take a first look.</p>
+    </div>
+    <div class="action-grid">
+      <div class="action-card book">
+        <h3>Schedule an Appointment</h3>
+        <p>Choose an available time below. Most first-time consultations run about 45 minutes, in-office or by phone.</p>
+        <div class="calendar-mini">
+          <div class="day-label">S</div><div class="day-label">M</div><div class="day-label">T</div><div class="day-label">W</div><div class="day-label">T</div><div class="day-label">F</div><div class="day-label">S</div>
+          <div class="day muted">31</div><div class="day">1</div><div class="day avail">2</div><div class="day avail">3</div><div class="day">4</div><div class="day avail">5</div><div class="day muted">6</div>
+          <div class="day muted">7</div><div class="day avail">8</div><div class="day">9</div><div class="day avail">10</div><div class="day avail">11</div><div class="day">12</div><div class="day muted">13</div>
+        </div>
+        <a href="#" class="btn btn-pine">View Available Times</a>
+      </div>
+      <div class="action-card portal" id="portal">
+        <h3>Secure Client Portal</h3>
+        <p>Upload tax documents, prior-year returns, or signed forms through our encrypted client portal — no email attachments needed.</p>
+        <div class="portal-row"><span class="dot"></span> Upload W-2s, 1099s &amp; receipts</div>
+        <div class="portal-row"><span class="dot"></span> View &amp; e-sign completed returns</div>
+        <div class="portal-row"><span class="dot"></span> Message Glenn's office directly</div>
+        <a href="#" class="btn btn-cream">Log In to Client Portal</a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ FAQ ============ -->
+<section class="faq" id="faq">
+  <div class="wrap">
+    <div class="section-head">
+      <span class="eyebrow">Tax Season FAQ</span>
+      <h2>Questions we hear every year.</h2>
+      <p>Quick answers — if you don't see yours here, that's exactly what the consultation is for.</p>
+    </div>
+    <div class="faq-list">
+      <div class="faq-item">
+        <button class="faq-q">What documents should I bring to my appointment? <span class="icon">+</span></button>
+        <div class="faq-a"><div class="faq-a-inner">Bring last year's return, all W-2s and 1099s, mortgage and property tax statements, records of any estimated payments, and documentation for major life changes — a new home, a new business, marriage, or a dependent.</div></div>
+      </div>
+      <div class="faq-item">
+        <button class="faq-q">When are returns due, and can I get an extension? <span class="icon">+</span></button>
+        <div class="faq-a"><div class="faq-a-inner">Individual returns are generally due April 15. We can file a six-month extension for you, but note that an extension to file is not an extension to pay — any tax owed is still due by the original deadline.</div></div>
+      </div>
+      <div class="faq-item">
+        <button class="faq-q">How long does it take to get my refund? <span class="icon">+</span></button>
+        <div class="faq-a"><div class="faq-a-inner">E-filed returns with direct deposit are typically processed within 2-3 weeks by the IRS. California refunds usually follow a similar timeline. Paper returns take significantly longer.</div></div>
+      </div>
+      <div class="faq-item">
+        <button class="faq-q">What's the difference between an EA and a CPA? <span class="icon">+</span></button>
+        <div class="faq-a"><div class="faq-a-inner">Both Enrolled Agents and CPAs have unlimited representation rights before the IRS. EAs are federally licensed specifically in tax matters and must complete 72 hours of continuing education every three years, focused entirely on taxation.</div></div>
+      </div>
+      <div class="faq-item">
+        <button class="faq-q">Do I need to come in person, or can this be done remotely? <span class="icon">+</span></button>
+        <div class="faq-a"><div class="faq-a-inner">Most clients drop off or upload documents through the client portal and handle the rest by phone or email. In-person appointments are available at our Auburn office, with limited Truckee availability during tax season.</div></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ FOOTER ============ -->
+<footer>
+  <div class="wrap">
+    <div class="footer-grid">
+      <div>
+        <div class="brand-foot">Mason &amp; Associates Tax Service</div>
+        <p>Glenn Steven Mason, EA</p>
+        <p>1319 Vintage Way<br>Auburn, California 95603</p>
+        <p>(530) 823-3725</p>
+      </div>
+      <div>
+        <h4>Office Hours</h4>
+        <ul>
+          <li>Mon – Fri: 9:00 AM – 5:00 PM</li>
+          <li>Sat: By appointment</li>
+          <li>Extended hours, Feb – Apr</li>
+          <li>Seasonal Truckee availability</li>
+        </ul>
+      </div>
+      <div>
+        <h4>Quick Links</h4>
+        <ul>
+          <li><a href="#services">Services</a></li>
+          <li><a href="#about">About the Firm</a></li>
+          <li><a href="#reviews">Client Reviews</a></li>
+          <li><a href="#schedule">Schedule an Appointment</a></li>
+          <li><a href="#portal">Client Portal</a></li>
+        </ul>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <span>© 2026 Mason &amp; Associates Tax Service. All rights reserved.</span>
+      <span>Glenn Steven Mason, EA · Enrolled Agent, IRS-registered</span>
+    </div>
+  </div>
+</footer>
+
+<script>
+  document.querySelectorAll('.faq-q').forEach(btn => {
+    btn.addEventListener('click', () => {
+      const item = btn.closest('.faq-item');
+      const wasOpen = item.classList.contains('open');
+      document.querySelectorAll('.faq-item.open').forEach(el => el.classList.remove('open'));
+      if(!wasOpen){ item.classList.add('open'); }
+    });
+  });
+</script>
+
+</body>
+</html>
